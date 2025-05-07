@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Hello</title>
+		<style type="text/css">
+			body {
+				background-color: #eeeeee;
+				font-size: 12px
+			}
+			.card {
+				border-color: #FFF !important;
+				--bs-card-border-color: #FFF !important;
+			}
+			.hide { 
+    			display: none;
+			}
+			.of-major {
+				background: #a2cb86;
+  				border-radius: 10px;
+  				padding: 6px;
+			}
+			.of-minor {
+				background: #e68d8d;
+  				border-radius: 10px;
+  				padding: 6px;
+			}
+			th.centeredColumnContent {
+    			text-align: center !important;
+			}
+		</style>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+		<script type="text/javascript"> 
+		
+			PrimeFaces.locales['pt'] = { closeText: 'Fechar', prevText: 'Anterior', nextText: 'Próximo', currentText: 'Começo', monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'], monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'], dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'], dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'], dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'], weekHeader: 'Semana', firstDay: 0, isRTL: false, showMonthAfterYear: false, yearSuffix: '', timeOnlyTitle: 'Só Horas', timeText: 'Tempo', hourText: 'Hora', minuteText: 'Minuto', secondText: 'Segundo', ampm: false, month: 'Mês', week: 'Semana', day: 'Dia', allDayText: 'Todo o Dia' };
+			
+			function hideContainerFromCheckBox(idCheckBox, idContainer) {
+				
+				var checkBox = document.getElementById(idCheckBox);
+				var div = document.getElementById(idContainer);
+				
+				if (checkBox.checked == true) {
+					div.style.display = "block";
+				} else {
+					div.style.display = "none";
+				}
+				
+			}
+			 
+		</script>
+	</h:head>
+
+	<h:body>
+		<div class="card">
+			<div class="card-body">
+				<ui:insert name="centro">
+        			O que estiver aqui será substituido!
+    			</ui:insert>
+    		</div>
+    	</div>
+	</h:body>
+	
+</html>

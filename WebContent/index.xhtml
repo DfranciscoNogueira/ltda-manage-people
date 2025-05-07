@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:decorate template="/template.xhtml">
+	<ui:define name="centro">
+		<div class="container text-center">
+
+			<h:form id="form">
+			
+				<p:growl id="messages" showDetail="true" />
+				
+				<!-- botoes -->
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton 
+							value="Cadastrar Pessoa" 
+							icon="pi pi-plus" 
+							actionListener="#{peopleBean.peoplePage()}" 
+							tyleClass="ui-button-success" 
+							style="margin-right: .5rem">
+						</p:commandButton>
+						<p:commandButton 
+							id="delete-people-button"
+							value="#{peopleBean.deleteButtonMessage}" 
+							icon="pi pi-trash"
+							actionListener="#{peopleBean.deleteSelectedPeople}"
+							styleClass="ui-button-danger"
+							disabled="#{!peopleBean.hasSelectedPeople()}" update="@this">
+							<p:confirm header="Confirmation" message="Excluir as pessoas selecionadas ?" icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+					</p:toolbarGroup>
+				</p:toolbar>
+				
+				<!-- tabela de pessoas -->
+				
+				<p:dataTable id="dt-people" rendered="#{not empty peopleBean.people}" widgetVar="dtPeople" var="peopleGridModel" emptyMessage="Zero" value="#{peopleBean.people}" reflow="true" styleClass="people-table" selection="#{peopleBean.selectedPeople}" rowKey="#{peopleGridModel.id}" paginator="true" rows="10" selectionRowMode="add" paginatorPosition="bottom">
+            		<f:facet name="header">
+                		<div class="people-table-header">
+                    		<span style="font-weight: bold">Pessoas</span>
+                		</div>
+            		</f:facet>
+
+            		<p:ajax event="rowSelect" update=":form:delete-people-button" />
+            		<p:ajax event="rowUnselect" update=":form:delete-people-button" />
+            		<p:ajax event="rowSelectCheckbox" update=":form:delete-people-button" />
+            		<p:ajax event="rowUnselectCheckbox" update=":form:delete-people-button" />
+            		<p:ajax event="toggleSelect" update=":form:delete-people-button" />
+
+            		<p:column selectionMode="multiple" styleClass="centeredColumnContent"></p:column>
+
+            		<p:column headerText="Nome" styleClass="centeredColumnContent">
+                		<h:outputText value="#{peopleGridModel.name}" />
+            		</p:column>
+            		
+            		<p:column headerText="Nascimento" styleClass="centeredColumnContent">
+                		<h:outputText value="#{peopleGridModel.dateBirth}" />
+            		</p:column>
+            		
+            		<p:column headerText="Idade" styleClass="centeredColumnContent">
+                		<h:outputText value="#{peopleGridModel.age}" />
+            		</p:column>
+            		
+            		<p:column headerText="Menor de Idade" styleClass="centeredColumnContent">
+                		<h:outputText styleClass="people-badge #{peopleBean.cssAge(peopleGridModel.age)}" value="#{peopleGridModel.age &lt; 18 ? 'Sim' : 'Não'}" />
+            		</p:column>
+            		
+            		<p:column headerText="Sexo" styleClass="centeredColumnContent">
+                		<h:outputText value="#{peopleGridModel.gender}" />
+            		</p:column>
+            		
+            		<p:column headerText="Ações" styleClass="centeredColumnContent">
+                		<p:commandButton 
+                			icon="pi pi-pencil" 
+                			actionListener="#{peopleBean.peoplePage(peopleGridModel)}" 
+                    		styleClass="edit-button rounded-button ui-button-success" 
+                    		process="@this">
+                		</p:commandButton>
+                		<p:commandButton 
+                			class="ui-button-warning rounded-button" icon="pi pi-trash"
+                            process="@this"
+                            oncomplete="PF('deletePeopleDialog').show()">
+                    			<f:setPropertyActionListener value="#{peopleGridModel}" target="#{peopleBean.person}" />
+                		</p:commandButton>
+            		</p:column>
+            		
+        		</p:dataTable>
+
+			</h:form>
+			
+			<p:confirmDialog widgetVar="deletePeopleDialog" showEffect="fade" width="300" message="Excluir Pessoa?" header="Confirmação" severity="warn">
+            	<p:commandButton value="Sim" icon="pi pi-check" actionListener="#{peopleBean.deletePeople}" process="@this" update=":form:delete-people-button" />
+            	<p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times" onclick="PF('deletePeopleDialog').hide()" />
+        	</p:confirmDialog>
+			
+		</div>
+
+	</ui:define>
+</ui:decorate>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:decorate template="/template.xhtml">
+	<ui:define name="centro">
+<div class="container">
+	<div class="container mt-5">
+        <h1 class="text-center mb-4">Gerenciar Pessoas</h1>
+        <!-- Formulário -->
+        <h:form id="formPeople">
+        	<div class="row d-flex justify-content-center">
+    			<div class="col-2">
+    				<p:outputLabel for="name">Nome</p:outputLabel>
+                    <p:inputText id="name" value="#{peopleBean.person.name}" required="true" />
+    			</div>
+    			<div class="col-2">
+    				<p:outputLabel for="dateBirth">Data Nascimento</p:outputLabel>
+					<p:datePicker id="dateBirth" value="#{peopleBean.person.dateBirth}" />
+    			</div>
+    			<div class="col-2">
+    				<p:outputLabel for="gender">Sexo</p:outputLabel>
+    				<p:selectOneMenu id="gender" class="form-select" value="#{peopleBean.person.gender}">
+    					<f:selectItem itemValue="" itemLabel="" />
+                        <f:selectItem itemValue="M" itemLabel="Masculino" />
+                        <f:selectItem itemValue="F" itemLabel="Feminino" />
+                        <f:selectItem itemValue="O" itemLabel="Outro" />
+                    </p:selectOneMenu>
+				</div>
+  			</div>
+  			<hr class="hr" />
+  			<div class="row d-flex justify-content-start">
+  				<div class="form-check">
+  					<input class="form-check-input" type="checkbox" value="" id="checkboxAddress" onclick="hideContainerFromCheckBox('checkboxAddress', 'containerAddress')"/>
+  					<label class="form-check-label" for="flexCheckDefault">
+    					Adicionar endereço
+  					</label>
+				</div>
+  			</div>
+			<div id="containerAddress" style="display: none;">
+				<div class="row d-flex justify-content-center">
+					<div class="col-2">
+    					<p:outputLabel for="state">Estado</p:outputLabel>
+    					<p:selectOneMenu id="state" value="#{peopleBean.address.state}" style="width: 200px">
+                    		<f:selectItem itemLabel="Selecione..." itemValue="" />
+                    		<f:selectItems value="#{peopleBean.states()}" />
+                    		<p:ajax event="change" listener="#{peopleBean.updateCities}" update="city" />
+                		</p:selectOneMenu>
+    				</div>
+    				<div class="col-2">
+    					<p:outputLabel for="city">Cidade</p:outputLabel>
+    					<p:selectOneMenu id="city" value="#{peopleBean.address.city}" style="width: 200px">
+                    		<f:selectItem itemLabel="Selecione..." itemValue="" />
+                    		<f:selectItems value="#{peopleBean.cities}" />
+                		</p:selectOneMenu>
+    				</div>
+    				<div class="col-2">
+    					<p:outputLabel for="publicPlace">Logradouro</p:outputLabel>
+                        <p:inputText id="publicPlace" value="#{peopleBean.address.publicPlace}" />
+					</div>
+				</div>
+				<div class="row d-flex justify-content-center">
+					<div class="col-2">
+    					<p:outputLabel for="number">Numero</p:outputLabel>
+                        <p:inputText id="number" value="#{peopleBean.address.number}" />
+    				</div>
+    				<div class="col-2">
+    					<p:outputLabel for="zipCode">CEP</p:outputLabel>
+                        <p:inputText id="zipCode" value="#{peopleBean.address.zipCode}" />
+    				</div>
+    				<div class="col-2">
+    					<p:outputLabel for="complemet">Complemento</p:outputLabel>
+                        <p:inputText id="complemet" />
+    				</div>
+				</div>
+				<div class="text-center" style="padding-top: 15px">
+                    <p:commandButton style="margin-right: 8px" value="Adicionar Endereço" update="formPeople" action="#{peopleBean.addAddress}" styleClass="ui-button-secondary" />
+                    <p:commandButton value="Limpar Endereço" action="#{peopleBean.resetAddress}" styleClass="ui-button-warning" />
+                </div>
+			</div>
+			<!-- Tabela de endereços -->
+            <p:dataTable id="addressTable" rendered="#{not empty peopleBean.addressList}" value="#{peopleBean.addressList}" var="addressModelTable" class="table table-striped mt-4">
+            	<p:column headerText="ESTADO">
+            		<h:outputText value="#{addressModelTable.state}" />
+            	</p:column>
+            	<p:column headerText="CIDADE">
+            		<h:outputText value="#{addressModelTable.city}" />
+            	</p:column>
+            	<p:column headerText="LOGRADOURO">
+            		<h:outputText value="#{addressModelTable.publicPlace}" />
+            	</p:column>
+            	<p:column headerText="NUMERO">
+            		<h:outputText value="#{addressModelTable.number}" />
+            	</p:column>
+            	<p:column headerText="CEP">
+            		<h:outputText value="#{addressModelTable.zipCode}" />
+            	</p:column>
+            	<p:column headerText="Ações">
+            		<p:commandButton value="Excluir" update="formPeople" action="#{peopleBean.deleteAddress(addressModelTable)}" styleClass="ui-button-danger"  />
+            	</p:column>
+            </p:dataTable>
+        
+        
+            <div class="card p-4">
+                
+                <div class="text-center">
+                    <p:commandButton value="Salvar Pessoa" style="margin-right: 8px" action="#{peopleBean.save}" />
+                    <p:commandButton value="Voltar" action="#{peopleBean.indexPage}" styleClass="ui-button-help" />
+                </div>
+            </div>
+        </h:form>
+
+        
+    </div>
+
+</div>
+</ui:define>
+</ui:decorate>
+</html>
